@@ -19,7 +19,7 @@ class ContactFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'contact' => fake()->numerify('#########'),
+            'contact' => fake()->unique()->numerify('#########'),
         ];
     }
 }
