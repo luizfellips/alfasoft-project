@@ -4,9 +4,13 @@
             @foreach ($contacts as $contact)
                 <x-contact-card :contact="$contact" />
             @endforeach
+
         @else
             <p> No contacts are registered.</p>
         @endunless
+    </div>
+    <div class="Links">
+        {{ $contacts->links() }}
     </div>
 
 </x-layout>
