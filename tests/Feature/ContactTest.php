@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Contact;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,24 +18,34 @@ class ContactTest extends TestCase
     {
         $contactData = $this->validContactData();
 
-        $response = $this->post('/contacts', ['contact' => $contactData]);
+        // Create a user and authenticate
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Use the full route name if you have one
+        $response = $this->post(route('contacts.store'), ['contact' => $contactData]);
         $response->assertStatus(302);
 
         $this->assertDatabaseHas('contacts', $contactData);
     }
 
     public function testContactUpdate()
-    {
-        $contact = Contact::factory()->create();
+{
+    // Create a user and authenticate
+    $user = User::factory()->create();
+    $this->actingAs($user);
 
-        $updatedContactData = $this->validContactData();
+    $contact = Contact::factory()->create();
 
-        $response = $this->put("/contacts/{$contact->id}", ['contact' => $updatedContactData]);
+    $updatedContactData = $this->validContactData();
 
-        $response->assertStatus(302);  // Assuming a redirect on success
+    // Use the full route name if you have one
+    $response = $this->patch(route('contacts.update', $contact->id), ['contact' => $updatedContactData]);
 
-        $this->assertDatabaseHas('contacts', $updatedContactData);
-    }
+    $response->assertStatus(302);  // Assuming a redirect on success
+
+    $this->assertDatabaseHas('contacts', $updatedContactData);
+}
 
     /**
      * Get valid contact data for testing.
