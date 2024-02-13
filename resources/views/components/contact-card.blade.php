@@ -1,4 +1,4 @@
-@props(['contact'])
+@props(['contact', 'trash'])
 
 <div class="ContactCard hover:scale-105 transition-transform">
     <a href="{{ route('contacts.show', ['contact' => $contact->id]) }}">
@@ -9,13 +9,25 @@
             <div class="card-body bg-slate-100">
                 <h5 class="card-title py-2"><strong>Contact email: </strong>{{ $contact->email }}</h5>
                 <h5 class="card-title py-2"><strong>Contact number: </strong>{{ $contact->contact }}</h5>
-                <div class="mt-6 flex gap-6">
-                    <a class="rounded-full text-center bg-blue-500 py-4 px-10 font-bold container transition text-white shadow hover:bg-blue-600"
-                        href="{{ route('contacts.edit', ['contact' => $contact->id]) }}">Edit</a>
+                @if ($trash)
+                    <div class="mt-6">
+                        <form action="{{ route('contacts.restore', $contact->id) }}" method="post">
+                            @csrf
+                            <input type="hidden" name="_method" value="PUT">
+                            <button type="submit"
+                                class="rounded-full text-center bg-blue-500 py-4 px-10 font-bold container transition text-white shadow hover:bg-blue-600">Restore
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <div class="mt-6 flex gap-6">
+                        <a class="rounded-full text-center bg-blue-500 py-4 px-10 font-bold container transition text-white shadow hover:bg-blue-600"
+                            href="{{ route('contacts.edit', ['contact' => $contact->id]) }}">Edit</a>
 
-                    <a class="rounded-full text-center bg-red-500 py-4 px-10 font-bold container transition text-white shadow hover:bg-red-600"
-                        href="{{ route('contacts.confirmDelete', ['contact' => $contact->id]) }}">Delete</a>
-                </div>
+                        <a class="rounded-full text-center bg-red-500 py-4 px-10 font-bold container transition text-white shadow hover:bg-red-600"
+                            href="{{ route('contacts.confirmDelete', ['contact' => $contact->id]) }}">Delete</a>
+                    </div>
+                @endif
             </div>
         </div>
     </a>

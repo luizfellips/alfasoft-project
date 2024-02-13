@@ -59,7 +59,6 @@ class ContactRequest extends FormRequest
             'contact.contact.max' => 'The contact number must not exceed 9 characters.',
             'contact.contact.regex' => 'The contact number must only contain numbers.',
             'contact.contact.unique' => 'This contact number is already taken.',
-
         ];
     }
 }

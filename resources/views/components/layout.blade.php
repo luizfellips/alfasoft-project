@@ -6,14 +6,14 @@
 </head>
 
 <body style="overflow-x: hidden;">
-        <div class="container">
+    <div>
         <x-flash-message />
-        <header class="row">
+        <header class="bg-gray-100 w-screen">
             @include('layouts.navigation')
 
         </header>
         <!-- wraps content !-->
-        <div id="main" class="row px-5 mx-5 my-3">
+        <div id="main" class="row px-56 mx-5 my-3">
             {{ $slot }}
         </div>
         <footer class="row">

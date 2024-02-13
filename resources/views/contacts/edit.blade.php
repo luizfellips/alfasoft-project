@@ -24,15 +24,15 @@
                             <span class="block text-xs font-light text-stone-400">The name of the contact</span>
                         </label>
                         <input type="text" placeholder="Contact name" name="contact[name]"
-                            value="{{$contact->name }}" class="mt-2 px-4 py-2 shadow rounded" />
+                            value="{{ $contact->name }}" class="mt-2 px-4 py-2 shadow rounded" />
                     </div>
                     <div class="flex flex-col mb-4">
                         <label>Email Address
                             <span class="block text-xs font-light text-stone-400">The email address of the
                                 contact</span>
                         </label>
-                        <input type="text" placeholder="Email address" value="{{$contact->email }}" name="contact[email]"
-                            class="mt-2 px-4 py-2 shadow rounded" />
+                        <input type="text" placeholder="Email address" value="{{ $contact->email }}"
+                            name="contact[email]" class="mt-2 px-4 py-2 shadow rounded" />
                     </div>
                 </div>
                 <div class="flex flex-col mb-4">
@@ -40,8 +40,8 @@
                         <span class="block text-xs font-light text-stone-400">The phone number that belongs to the
                             contact</span>
                     </label>
-                    <input type="text" placeholder="Contact number" name="contact[contact]" value="{{ strval($contact->contact) }}" maxlength="9"
-                        class="mt-2 px-4 py-2 shadow rounded" />
+                    <input type="text" placeholder="Contact number" name="contact[contact]"
+                        value="{{ strval($contact->contact) }}" maxlength="9" class="mt-2 px-4 py-2 shadow rounded" />
                 </div>
                 <div class="mt-6 flex gap-6">
                     <button type="submit"

@@ -79,9 +79,9 @@ class ContactsController extends Controller
         }
     }
 
-    public function confirmDelete(Contact $contact) {
+    public function confirmDelete(Contact $contact)
+    {
         return view('contacts.confirm', compact('contact'));
-
     }
     /**
      * Remove the specified resource from storage.
@@ -89,14 +89,33 @@ class ContactsController extends Controller
     public function destroy(Contact $contact)
     {
         try {
-            // Soft delete the contact
-        $contact->delete();
+            $contact->delete();
 
-        // Redirect back or to the contact list with a success message
-        return redirect()->route('home')->with('message', 'Contact deleted successfully!');
-    } catch (\Throwable $th) {
-        return redirect()->route('home')->with('message', 'Contact could not be deleted. Please contact dev to understand more');
+            return redirect()->route('home')->with('message', 'Contact deleted successfully!');
+        } catch (\Throwable $th) {
+            return redirect()->route('home')->with('message', 'Contact could not be deleted. Please contact dev to understand more');
         }
+    }
 
+    public function trashed()
+    {
+        $contacts = Contact::onlyTrashed()->paginate(6);
+
+        return view('contacts.trashed', compact('contacts'));
+    }
+
+    public function restore($id)
+    {
+        try {
+            $softDeletedContact = Contact::onlyTrashed()->find($id);
+
+            if ($softDeletedContact) {
+                $softDeletedContact->restore();
+            }
+
+            return redirect()->route('home')->with('message', 'Contact restored successfully!');
+        } catch (\Throwable $th) {
+            return redirect()->route('home')->with('message', 'Contact could not be restored. Contact dev for more info');
+        }
     }
 }

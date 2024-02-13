@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/', [ContactsController::class, 'index'])->name('home');
 
+Route::get('contacts/trashed', [ContactsController::class, 'trashed'])->name('contacts.trashed');
+Route::put('contacts/{contact}/restore', [ContactsController::class, 'restore'])->name('contacts.restore');
 Route::get('contacts/confirmDelete/{contact}', [ContactsController::class, 'confirmDelete'])->name('contacts.confirmDelete');
 
 Route::resource('contacts', ContactsController::class)
