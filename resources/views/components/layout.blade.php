@@ -12,7 +12,8 @@
             @include('layouts.navigation')
 
         </header>
-        <div id="main" class="row">
+        <!-- wraps content !-->
+        <div id="main" class="row px-5 mx-5 my-3">
             {{ $slot }}
         </div>
         <footer class="row">
