@@ -14,20 +14,14 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// define guest allowed routes for contact listing and show
-Route::get('/', [ContactsController::class, 'index'])->name('home');
-Route::get('contacts/{contact}', [ContactsController::class, 'index'])->name('contacts.show');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+// authenticated routes, only users can access
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // group all routes with contact prefix, buttons are still available for clicking but if not authenticated user gets sent to login page.
+    // group all routes with contact prefix, buttons are still available for clicking but if not authenticated user gets sent to login page + flash message.
     Route::prefix('contacts')->group(function () {
         Route::get('trashed', [ContactsController::class, 'trashed'])->name('contacts.trashed');
         Route::put('{contact}/restore', [ContactsController::class, 'restore'])->name('contacts.restore');
@@ -38,5 +32,14 @@ Route::middleware('auth')->group(function () {
             ->except(['index','show']);
     });
 });
+
+// define guest allowed routes for contact listing and show, below auth to avoid conflicting
+Route::get('/', [ContactsController::class, 'index'])->name('home');
+Route::get('contacts/{contact}', [ContactsController::class, 'index'])->name('contacts.show');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 require __DIR__.'/auth.php';
