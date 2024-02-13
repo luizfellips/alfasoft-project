@@ -6,6 +6,12 @@
 </head>
 
 <body style="overflow-x: hidden;">
+    <style>
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+    </style>
     <div>
         <x-flash-message />
         <header class="bg-gray-100 w-screen">
