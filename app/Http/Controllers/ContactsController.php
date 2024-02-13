@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ContactRequest;
+use Exception;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use App\Http\Requests\ContactRequest;
 
 class ContactsController extends Controller
 {
@@ -42,7 +43,6 @@ class ContactsController extends Controller
         } catch (\Throwable $th) {
             return redirect()->route('home')->with('message', 'Contact could not be created. Please contact dev to understand more');
         }
-
     }
 
     /**
@@ -58,22 +58,45 @@ class ContactsController extends Controller
      */
     public function edit(Contact $contact)
     {
-        //
+        return view('contacts.edit', compact('contact'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Contact $contact)
+    public function update(ContactRequest $request, Contact $contact)
     {
-        //
+        try {
+            $contact->update([
+                'name' => $request->input('contact.name'),
+                'email' => $request->input('contact.email'),
+                'contact' => $request->input('contact.contact'),
+            ]);
+
+            return redirect()->route('home')->with('message', 'Contact updated successfully!');
+        } catch (\Throwable $th) {
+            return redirect()->route('home')->with('message', 'Contact could not be updated. Please contact dev to understand more');
+        }
     }
 
+    public function confirmDelete(Contact $contact) {
+        return view('contacts.confirm', compact('contact'));
+
+    }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Contact $contact)
     {
-        //
+        try {
+            // Soft delete the contact
+        $contact->delete();
+
+        // Redirect back or to the contact list with a success message
+        return redirect()->route('home')->with('message', 'Contact deleted successfully!');
+    } catch (\Throwable $th) {
+        return redirect()->route('home')->with('message', 'Contact could not be deleted. Please contact dev to understand more');
+        }
+
     }
 }

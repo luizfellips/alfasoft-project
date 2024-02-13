@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ContactRequest extends FormRequest
@@ -21,10 +22,23 @@ class ContactRequest extends FormRequest
      */
     public function rules(): array
     {
+        $contactId = $this->route('contact') ? $this->route('contact')->id : null;
+
         return [
-            'contact.name' => 'required|string|max:255|min:5',
-            'contact.email' => 'required|email|unique:contacts,email|max:255',
-            'contact.contact' =>'required|numeric|unique:contacts,contact|max:9',
+            'contact.name' => 'required|string|max:255|min:4',
+            'contact.email' => [
+                'required',
+                'email',
+                Rule::unique('contacts', 'email')->ignore($contactId),
+                'max:255',
+            ],
+            'contact.contact' => [
+                'required',
+                'string',
+                'regex:/^[0-9]{1,9}$/',
+                Rule::unique('contacts', 'contact')->ignore($contactId),
+                'max:9',
+            ],
         ];
     }
 
@@ -35,14 +49,17 @@ class ContactRequest extends FormRequest
             'contact.name.required' => 'The name field is required.',
             'contact.name.string' => 'The name must be a string.',
             'contact.name.max' => 'The name must not exceed 255 characters.',
-            'contact.name.min' => 'The name must not be at least 5 characters long.',
+            'contact.name.min' => 'The name must be at least 5 characters long.',
             'contact.email.required' => 'The email field is required.',
             'contact.email.email' => 'Please enter a valid email address.',
             'contact.email.unique' => 'This email address is already taken.',
             'contact.email.max' => 'The email must not exceed 255 characters.',
             'contact.contact.required' => 'The contact number field is required.',
             'contact.contact.numeric' => 'The contact number must be a number.',
-            'contact.contact.max' => 'The contact number must not exceed 20 characters.',
+            'contact.contact.max' => 'The contact number must not exceed 9 characters.',
+            'contact.contact.regex' => 'The contact number must only contain numbers.',
+            'contact.contact.unique' => 'This contact number is already taken.',
+
         ];
     }
 }

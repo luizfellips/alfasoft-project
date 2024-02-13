@@ -14,12 +14,14 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/', [ContactsController::class, 'index'])->name('home');
+
+Route::get('contacts/confirmDelete/{contact}', [ContactsController::class, 'confirmDelete'])->name('contacts.confirmDelete');
 
 Route::resource('contacts', ContactsController::class)
 ->parameter('contacts', 'contact')
 ->except('index');
 
-Route::get('/', [ContactsController::class, 'index'])->name('home');
 
 
 Route::get('/dashboard', function () {
