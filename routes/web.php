@@ -16,8 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('contacts', ContactsController::class)
-->parameter('contacts', 'contact');
+->parameter('contacts', 'contact')
+->except('index');
 
+Route::get('/', [ContactsController::class, 'index'])->name('home');
 
 
 Route::get('/dashboard', function () {
